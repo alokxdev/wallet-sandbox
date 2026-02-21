@@ -1,6 +1,9 @@
 import mongoose from "mongoose";
+import { env } from "./config/env";
 
-mongoose.connect(process.env.MONGO_URI);
+const mongoUrl = env.MONGO_URL;
+
+mongoose.connect(mongoUrl);
 
 const userSchema = mongoose.Schema({
   username: String,
