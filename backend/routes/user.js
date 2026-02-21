@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { User } from "../db.js";
+import { User, Account } from "../db.js";
 import jwt from "jsonwebtoken";
 import { env } from "../config/env.js";
 
@@ -15,6 +15,10 @@ router.post("/signup", async (req, res) => {
     lastName,
   });
   const userId = user._id;
+  await Account.create({
+    userId,
+    balance: 1 + Math.random() * 10000,
+  });
   const token = jwt.sign({ userId }, JWT_SECRET);
   res.json({
     message: "User created successfully!",
