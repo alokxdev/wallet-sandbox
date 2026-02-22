@@ -6,7 +6,12 @@ import { env } from "./config/env.js";
 const app = express();
 const PORT = env.PORT;
 
-app.use(cors());
+app.use(
+  cors({
+    origin: "http://localhost:5173",
+    credentials: true,
+  }),
+);
 app.use(express.json());
 app.use("/api/v1", mainRouter);
 

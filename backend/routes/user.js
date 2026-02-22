@@ -2,6 +2,7 @@ import { Router } from "express";
 import { User, Account } from "../db.js";
 import jwt from "jsonwebtoken";
 import { env } from "../config/env.js";
+import authMiddleware from "../middleware/auth.middleware.js";
 
 const router = Router();
 const JWT_SECRET = env.JWT_SECRET;
@@ -40,6 +41,44 @@ router.post("/signin", async (req, res) => {
   res.json({
     message: "Signed in successfully!",
     token,
+  });
+});
+
+router.put("/", authMiddleware, async (req, res) => {
+  await User.updateOne({ _id: req.userId }, req.body);
+
+  res.json({
+    message: "Updated successfully",
+  });
+});
+
+router.get("/bulk", async (req, res) => {
+  const filter = req.query.filter || "";
+
+  const users = await User.find({
+    $or: [
+      {
+        firstName: {
+          $regex: filter,
+          $options: "i",
+        },
+      },
+      {
+        lastName: {
+          $regex: filter,
+          $options: "i",
+        },
+      },
+    ],
+  });
+
+  res.json({
+    user: users.map((user) => ({
+      username: user.username,
+      firstName: user.firstName,
+      lastName: user.lastName,
+      _id: user._id,
+    })),
   });
 });
 
