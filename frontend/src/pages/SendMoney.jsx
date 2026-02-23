@@ -28,11 +28,29 @@ export default function SendMoney() {
   }, []);
 
   // 2. Defined the missing handler
-  const handleTransfer = (e) => {
+  const handleTransfer = async (e) => {
     e.preventDefault();
-    alert(`Transferring ₹${amount} to ${name}`);
-  };
 
+    try {
+      const response = await axios.post(
+        "http://localhost:3000/api/v1/account/transfer",
+        {
+          amount: Number(amount),
+          to: id,
+        },
+        {
+          headers: {
+            Authorization: "Bearer " + localStorage.getItem("token"),
+          },
+        },
+      );
+
+      alert("Transfer successful");
+    } catch (error) {
+      console.error(error);
+      alert("Transfer failed");
+    }
+  };
   return (
     <div className="min-h-screen bg-[#FDFDFD] flex items-center justify-center px-6 font-sans">
       <div className="w-full max-w-[400px] bg-white rounded-[32px] shadow-[0_20px_50px_rgba(0,0,0,0.04)] border border-gray-100 overflow-hidden">
