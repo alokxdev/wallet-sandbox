@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 export default function Dashboard() {
   const [balance, setBalance] = useState(0);
@@ -7,6 +8,7 @@ export default function Dashboard() {
   const [currUser, setCurrUser] = useState("");
   console.log(localStorage.getItem("token"));
   const [filter, setFilter] = useState("");
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchBalance = async () => {
@@ -40,9 +42,9 @@ export default function Dashboard() {
     fetchUsers();
   }, [filter]);
 
-  const sendMoney = () => {
-    alert("Money sent");
-  };
+  function sendMoney(userId, username) {
+    navigate(`/send?id=${userId}&name=${username}`);
+  }
 
   return (
     <div className="min-h-screen bg-[#FDFDFD] font-sans text-gray-900">
@@ -166,13 +168,13 @@ export default function Dashboard() {
                       {user.firstName}
                     </p>
                     <p className="text-[11px] text-gray-400 font-medium tracking-wide italic">
-                      @user_tag
+                      {`@${user.username}`}
                     </p>
                   </div>
                 </div>
 
                 <button
-                  onClick={sendMoney}
+                  onClick={(e) => sendMoney(user._id, user.firstName)}
                   className="px-5 py-2 bg-gray-50 text-gray-900 text-xs font-bold rounded-lg hover:bg-[#064E3B] hover:text-white active:scale-[0.97] transition-all"
                 >
                   Send
