@@ -1,7 +1,153 @@
+import { useState } from "react";
+const users = ["Justin Gaethje", "Dustin Poirier", "Charles Oliveira"];
+
 export default function Dashboard() {
+  const sendMoney = () => {
+    alert("Money sent");
+  };
+
+  const balance = 5000;
   return (
-    <>
-      <h1>Dashboard</h1>
-    </>
+    <div className="min-h-screen bg-[#FDFDFD] font-sans text-gray-900">
+      {/* Navbar */}
+      <nav className="flex items-center justify-between px-8 py-5 bg-white border-b border-gray-100 sticky top-0 z-10">
+        <div className="flex items-center gap-3">
+          {/* Geometric Vault Icon */}
+          <div className="h-10 w-10 bg-[#064E3B] rounded-xl flex items-center justify-center shadow-sm">
+            <svg
+              width="20"
+              height="20"
+              viewBox="0 0 24 24"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M17 9V7C17 4.23858 14.7614 2 12 2C9.23858 2 7 4.23858 7 7V9M5 9H19C20.1046 9 21 9.89543 21 11V19C21 20.1046 20.1046 21 19 21H5C3.89543 21 3 20.1046 3 19V11C3 9.89543 3.89543 9 5 9Z"
+                stroke="white"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              />
+              <circle cx="12" cy="15" r="1" fill="white" />
+            </svg>
+          </div>
+          <div className="flex flex-col">
+            <span className="text-lg font-bold tracking-tight leading-none text-gray-900">
+              Alok
+            </span>
+            <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-[#064E3B]">
+              Wallet
+            </span>
+          </div>
+        </div>
+
+        <div className="flex items-center gap-4">
+          <div className="text-right hidden sm:block">
+            <p className="text-xs font-semibold text-gray-900 leading-none">
+              Account User
+            </p>
+            <p className="text-[10px] text-gray-400 mt-1">Verified</p>
+          </div>
+          <div className="h-10 w-10 bg-gray-50 rounded-full flex items-center justify-center border border-gray-100 cursor-pointer hover:bg-gray-200 transition-colors">
+            <span className="text-xs font-bold text-[#064E3B]">AU</span>
+          </div>
+        </div>
+      </nav>
+
+      <main className="max-w-3xl mx-auto px-6 py-12">
+        {/* Balance Card Section */}
+        <section className="mb-14 p-8 bg-white border border-gray-100 rounded-[32px] shadow-sm">
+          <div className="flex justify-between items-start mb-4">
+            <p className="text-xs font-semibold text-gray-400 uppercase tracking-[0.15em]">
+              Total Balance
+            </p>
+            <span className="px-2 py-1 bg-emerald-50 text-[#064E3B] text-[10px] font-bold rounded-md uppercase">
+              Live
+            </span>
+          </div>
+          <div className="flex items-baseline gap-1">
+            <span className="text-2xl font-medium text-gray-400">$</span>
+            <h2 className="text-5xl font-semibold tracking-tighter text-gray-900">
+              {balance.toLocaleString(undefined, { minimumFractionDigits: 2 })}
+            </h2>
+          </div>
+        </section>
+
+        {/* Users Section */}
+        <section>
+          <div className="flex items-center justify-between mb-6">
+            <h3 className="text-lg font-semibold text-gray-900 tracking-tight">
+              Send Money
+            </h3>
+            <span className="text-xs font-medium text-[#064E3B] cursor-pointer hover:underline underline-offset-4">
+              View Contacts
+            </span>
+          </div>
+
+          {/* Search Bar */}
+          <div className="relative mb-8">
+            <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none text-gray-400">
+              <svg
+                className="h-5 w-5"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth="2"
+                  d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
+                />
+              </svg>
+            </div>
+            <form onSubmit={(e) => e.preventDefault()}>
+              <input
+                type="search"
+                placeholder="Search by name or email..."
+                className="w-full pl-11 pr-4 py-4 bg-gray-50 border border-transparent rounded-2xl focus:bg-white focus:ring-2 focus:ring-[#064E3B]/5 focus:border-[#064E3B] transition-all text-sm outline-none"
+                onChange={(e) => setFilter(e.target.value)}
+              />
+            </form>
+          </div>
+
+          {/* User List */}
+          <div className="space-y-2">
+            {users.map((user) => (
+              <div
+                className="flex items-center justify-between p-3 bg-white border border-transparent rounded-2xl hover:border-gray-100 hover:shadow-sm transition-all group"
+                key={user}
+              >
+                <div className="flex items-center gap-4">
+                  <div className="h-11 w-11 bg-gray-50 text-[#064E3B] rounded-xl flex items-center justify-center font-bold text-sm border border-gray-100 group-hover:bg-emerald-50 group-hover:border-emerald-100 transition-colors">
+                    {user.charAt(0).toUpperCase()}
+                  </div>
+                  <div>
+                    <p className="font-semibold text-sm text-gray-900">
+                      {user}
+                    </p>
+                    <p className="text-[11px] text-gray-400 font-medium tracking-wide italic">
+                      @user_tag
+                    </p>
+                  </div>
+                </div>
+
+                <button
+                  onClick={sendMoney}
+                  className="px-5 py-2 bg-gray-50 text-gray-900 text-xs font-bold rounded-lg hover:bg-[#064E3B] hover:text-white active:scale-[0.97] transition-all"
+                >
+                  Send
+                </button>
+              </div>
+            ))}
+            {users.length === 0 && (
+              <p className="text-center py-10 text-sm text-gray-400 italic">
+                No users found matching your search.
+              </p>
+            )}
+          </div>
+        </section>
+      </main>
+    </div>
   );
 }
