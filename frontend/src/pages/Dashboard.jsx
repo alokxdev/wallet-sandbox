@@ -51,23 +51,25 @@ export default function Dashboard() {
       {/* Navbar */}
       <nav className="flex items-center justify-between px-8 py-5 bg-white border-b border-gray-100 sticky top-0 z-10">
         <div className="flex items-center gap-3">
-          {/* Geometric Vault Icon */}
+          {/* Updated Mint Leaf Icon */}
           <div className="h-10 w-10 bg-[#064E3B] rounded-xl flex items-center justify-center shadow-sm">
             <svg
-              width="20"
-              height="20"
+              width="22"
+              height="22"
               viewBox="0 0 24 24"
               fill="none"
               xmlns="http://www.w3.org/2000/svg"
             >
               <path
-                d="M17 9V7C17 4.23858 14.7614 2 12 2C9.23858 2 7 4.23858 7 7V9M5 9H19C20.1046 9 21 9.89543 21 11V19C21 20.1046 20.1046 21 19 21H5C3.89543 21 3 20.1046 3 19V11C3 9.89543 3.89543 9 5 9Z"
-                stroke="white"
-                strokeWidth="2"
-                strokeLinecap="round"
-                strokeLinejoin="round"
+                d="M12 22C12 22 20 18 20 12C20 6.5 15.5 2 12 2C8.5 2 4 6.5 4 12C4 18 12 22 12 22Z"
+                fill="white"
               />
-              <circle cx="12" cy="15" r="1" fill="white" />
+              <path
+                d="M12 22V2M12 22C12 22 15 17 19 16M12 16C12 16 9 12 5 11"
+                stroke="#064E3B"
+                strokeWidth="1.5"
+                strokeLinecap="round"
+              />
             </svg>
           </div>
           <div className="flex flex-col">
@@ -89,7 +91,7 @@ export default function Dashboard() {
           </div>
           <div className="h-10 w-10 bg-gray-50 rounded-full flex items-center justify-center border border-gray-100 cursor-pointer hover:bg-gray-200 transition-colors">
             <span className="text-xs font-bold text-[#064E3B]">
-              {currUser[0]}
+              {currUser ? currUser[0].toUpperCase() : "U"}
             </span>
           </div>
         </div>
@@ -109,7 +111,7 @@ export default function Dashboard() {
           <div className="flex items-baseline gap-1">
             <span className="text-2xl font-medium text-gray-400">₹</span>
             <h2 className="text-5xl font-semibold tracking-tighter text-gray-900">
-              {balance.toLocaleString(undefined)}
+              {balance.toLocaleString(undefined, { minimumFractionDigits: 2 })}
             </h2>
           </div>
         </section>

@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { useSearchParams } from "react-router-dom";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 export default function SendMoney() {
   const [searchParams] = useSearchParams();
@@ -9,6 +10,7 @@ export default function SendMoney() {
   // 1. Defined the missing state
   const [amount, setAmount] = useState("");
   const [userBalance, setUserBalance] = useState(0);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchBalance = async () => {
@@ -45,7 +47,9 @@ export default function SendMoney() {
         },
       );
 
-      alert("Transfer successful");
+      alert(response.data.message);
+      console.log(response.data);
+      navigate("/dashboard");
     } catch (error) {
       console.error(error);
       alert("Transfer failed");
