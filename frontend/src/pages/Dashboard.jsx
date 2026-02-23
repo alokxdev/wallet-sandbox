@@ -1,12 +1,49 @@
-import { useState } from "react";
-const users = ["Justin Gaethje", "Dustin Poirier", "Charles Oliveira"];
+import { useState, useEffect } from "react";
+import axios from "axios";
 
 export default function Dashboard() {
+  const [balance, setBalance] = useState(0);
+  const [users, setUsers] = useState([]);
+  const [currUser, setCurrUser] = useState("");
+  console.log(localStorage.getItem("token"));
+  const [filter, setFilter] = useState("");
+
+  useEffect(() => {
+    const fetchBalance = async () => {
+      const response = await axios.get(
+        "http://localhost:3000/api/v1/account/balance",
+        {
+          headers: {
+            Authorization: "Bearer " + localStorage.getItem("token"),
+          },
+        },
+      );
+
+      setBalance(response.data.balance);
+      setCurrUser(response.data.user);
+    };
+
+    fetchBalance();
+  }, []);
+
+  useEffect(() => {
+    const fetchUsers = async () => {
+      const response = await axios.get(
+        "http://localhost:3000/api/v1/user/bulk?filter=" + filter,
+        {
+          headers: { Authorization: "Bearer " + localStorage.getItem("token") },
+        },
+      );
+      setUsers(response.data.users);
+    };
+
+    fetchUsers();
+  }, [filter]);
+
   const sendMoney = () => {
     alert("Money sent");
   };
 
-  const balance = 5000;
   return (
     <div className="min-h-screen bg-[#FDFDFD] font-sans text-gray-900">
       {/* Navbar */}
@@ -33,10 +70,10 @@ export default function Dashboard() {
           </div>
           <div className="flex flex-col">
             <span className="text-lg font-bold tracking-tight leading-none text-gray-900">
-              Alok
+              MINTPAY
             </span>
             <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-[#064E3B]">
-              Wallet
+              E-Wallet
             </span>
           </div>
         </div>
@@ -44,12 +81,14 @@ export default function Dashboard() {
         <div className="flex items-center gap-4">
           <div className="text-right hidden sm:block">
             <p className="text-xs font-semibold text-gray-900 leading-none">
-              Account User
+              {currUser}
             </p>
             <p className="text-[10px] text-gray-400 mt-1">Verified</p>
           </div>
           <div className="h-10 w-10 bg-gray-50 rounded-full flex items-center justify-center border border-gray-100 cursor-pointer hover:bg-gray-200 transition-colors">
-            <span className="text-xs font-bold text-[#064E3B]">AU</span>
+            <span className="text-xs font-bold text-[#064E3B]">
+              {currUser[0]}
+            </span>
           </div>
         </div>
       </nav>
@@ -66,9 +105,9 @@ export default function Dashboard() {
             </span>
           </div>
           <div className="flex items-baseline gap-1">
-            <span className="text-2xl font-medium text-gray-400">$</span>
+            <span className="text-2xl font-medium text-gray-400">₹</span>
             <h2 className="text-5xl font-semibold tracking-tighter text-gray-900">
-              {balance.toLocaleString(undefined, { minimumFractionDigits: 2 })}
+              {balance.toLocaleString(undefined)}
             </h2>
           </div>
         </section>
@@ -116,15 +155,15 @@ export default function Dashboard() {
             {users.map((user) => (
               <div
                 className="flex items-center justify-between p-3 bg-white border border-transparent rounded-2xl hover:border-gray-100 hover:shadow-sm transition-all group"
-                key={user}
+                key={user.username}
               >
                 <div className="flex items-center gap-4">
                   <div className="h-11 w-11 bg-gray-50 text-[#064E3B] rounded-xl flex items-center justify-center font-bold text-sm border border-gray-100 group-hover:bg-emerald-50 group-hover:border-emerald-100 transition-colors">
-                    {user.charAt(0).toUpperCase()}
+                    {user.firstName.charAt(0).toUpperCase()}
                   </div>
                   <div>
                     <p className="font-semibold text-sm text-gray-900">
-                      {user}
+                      {user.firstName}
                     </p>
                     <p className="text-[11px] text-gray-400 font-medium tracking-wide italic">
                       @user_tag

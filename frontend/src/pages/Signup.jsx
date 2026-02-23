@@ -1,6 +1,9 @@
 import { useState, useEffect } from "react";
+import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 export default function Signup() {
+  const navigate = useNavigate();
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [fName, setFname] = useState("");
@@ -8,7 +11,18 @@ export default function Signup() {
 
   const handleSignup = async (e) => {
     e.preventDefault();
-    alert(`${username} ${password} ${fName} ${lName}`);
+    const response = await axios.post(
+      "http://localhost:3000/api/v1/user/signup",
+      {
+        username,
+        password,
+        firstName: fName,
+        lastName: lName,
+      },
+    );
+    const token = response.data.token;
+    localStorage.setItem("token", token);
+    navigate("/dashboard");
   };
   const [isVisible, setIsVisible] = useState(false);
   useEffect(() => {
